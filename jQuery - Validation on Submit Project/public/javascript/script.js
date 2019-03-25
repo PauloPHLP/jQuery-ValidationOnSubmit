@@ -1,9 +1,12 @@
 $(() => {
+    let form = $("#form");
+    enableFastFeedback(form);
+
     $("#form").submit(function(event) {
-        var name = $("#name").val();
-        var password = $("#password").val();
-        var message = $("#message").val();
-        var checked = $("#checkbox").is(":checked");
+        let name = $("#name").val();
+        let password = $("#password").val();
+        let message = $("#message").val();
+        let checked = $("#checkbox").is(":checked");
 
         validateNameField(name, event);
         validatePasswordField(password, event);
@@ -11,6 +14,61 @@ $(() => {
         validateCheckboxField(checked, event);
     });
 });
+
+function enableFastFeedback(formElement) {
+    let name = formElement.find("#name");
+    let password = formElement.find("#password");
+    let message = formElement.find("#message");
+    let checkbox = formElement.find("#checkbox");
+
+    name.blur(function(event) {
+        let name = $(this).val();
+
+        validateNameField(name, event);
+
+        if(!isValidName(name)) {
+            $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"});
+        } else {
+            $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"});
+        }
+    })
+
+    password.blur(function(event) {
+        let password = $(this).val();
+
+        validatePasswordField(password, event);
+
+        if(!isValidPasswordField(password)) {
+            $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"});
+        } else {
+            $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"});
+        }
+    })
+
+    message.blur(function(event) {
+        let message = $(this).val();
+
+        validateMessageField(message, event);
+
+        if(!isValidMessage(message)) {
+            $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"});
+        } else {
+            $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"});
+        }
+    })
+
+    checkbox.blur(function(event) {
+        let isChecked = $(this).is(":checked");
+
+        validateCheckboxField(isChecked, event);
+
+        if(!isChecked) {
+            $(this).add("label[for='cb']").css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"});
+        } else {
+            $(this).add("label[for='cb']").css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"});
+        }
+    })
+}
 
 function validateNameField(name, event) {
     if (!isValidName(name)) {
